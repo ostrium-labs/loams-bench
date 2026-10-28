@@ -197,12 +197,13 @@
     },
     {
       "id": "swarm",
-      "backend": "Loams agentd / agent orchestration",
+      "backend": "Imperial Orchestrator (Loams Swarm) / agentd",
       "release_artifact": "loams-agentd",
       "client_language": "Rust",
       "protocol": "agentd Connect/gRPC",
       "metric": "simultaneously running agents; completed tasks/s; p50/p95/p99 task latency; failures; CPU and memory per agent",
-      "status": "unmeasured; concrete Swarm deployment and workload must be identified"
+      "status": "unmeasured; runtime and workload under investigation",
+      "orchestrator_name": "Imperial Orchestrator"
     }
   ],
   "swarm_target_concurrent_agents": 1000000000
