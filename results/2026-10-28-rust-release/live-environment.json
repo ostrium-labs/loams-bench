@@ -1,0 +1,13 @@
+{
+  "client_sha256": "9c110c36c58de8b7a430519dd0ae877c43e3c56a3edbd26207500ab0172dbbb9",
+  "client_source_revision": "de60ff1c193e2a0037fab6c0e69335b84898d8dd",
+  "client_build_run": "https://github.com/ostrium-labs/loams-bench/actions/runs/40626989055",
+  "server_image": "ghcr.io/ostrium-labs/loams:0.1.2",
+  "server_image_digest": "sha256:55c26325974e86d9e0a10fe52ca9ffb2940b742eafb7dabde48eb12632e98b33",
+  "server_source_revision": "8d5a955f580ff35d11e06c56cf970258c3212000",
+  "workload": "one-shot Live function returning pong; validated every response; no table reads or subscriptions",
+  "environment": "single shared laptop, Rust release client and pre-existing Loams 0.1.2 release image, loopback HTTP, embedded Live store",
+  "warmup": "10 requests per client",
+  "repetitions": 3,
+  "duration_seconds": 5
+}
