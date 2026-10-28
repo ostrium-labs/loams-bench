@@ -67,6 +67,7 @@ jobs:
           printf '[build]\ntarget-dir="/mnt/Projects/rust-cache/target"\njobs=2\nincremental=false\n' > "$HOME/.cargo/config.toml"
           rustc +1.97.1 -Vv > release-artifacts/compiler.txt
           git -C source rev-parse HEAD > release-artifacts/loams-source.txt
+          printf '%s\n' "$GITHUB_SHA" > release-artifacts/benchmark-source.txt
       - name: Release engine core and gateways
         working-directory: source
         run: |
