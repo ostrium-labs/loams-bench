@@ -11,7 +11,8 @@
     "Require simultaneous measurement windows before aggregating nodes of the same workload.",
     "Never multiply single-node QPS into a claimed distributed measurement.",
     "Record source, artifact hashes, compiler, release profile, fixture, topology, errors and latency.",
-    "Spend requires a bounded run allocation and remaining-budget check."
+    "Spend requires a bounded run allocation and remaining-budget check.",
+    "A running agent must be independently observable performing or awaiting a real assigned task within the same measurement interval; registered or idle records alone do not count."
   ],
   "engines": [
     {
@@ -193,6 +194,16 @@
       "protocol": "cdp",
       "metric": "completed navigations/s; DOM reads/s; script evaluations/s; screenshots/s",
       "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "swarm",
+      "backend": "Loams agentd / agent orchestration",
+      "release_artifact": "loams-agentd",
+      "client_language": "Rust",
+      "protocol": "agentd Connect/gRPC",
+      "metric": "simultaneously running agents; completed tasks/s; p50/p95/p99 task latency; failures; CPU and memory per agent",
+      "status": "unmeasured; concrete Swarm deployment and workload must be identified"
     }
-  ]
+  ],
+  "swarm_target_concurrent_agents": 1000000000
 }

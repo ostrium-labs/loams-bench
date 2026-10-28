@@ -9,3 +9,7 @@ Neither the billion-QPS target nor the billion-Git-operations/s target has been 
 Rust client output counts verified successful completions over elapsed time including draining in-flight operations, retains failures, and stores a latency histogram. Credentials are supplied through named environment variables; output excludes their values. A warmup or connection failure is recorded as blocked with no rate. The client refuses to overwrite an existing measurement.
 
 Build and run: `cargo build --release --locked --manifest-path rust/Cargo.toml`, then invoke `loams-bench scenarios.json <fresh-output-directory>`. The release workflow records compiler and source identities and uploads binary hashes. Release-suite rates remain unverified until the binaries are built and the corresponding engine scenarios complete.
+
+## Loams Swarm
+
+The target is 1,000,000,000 concurrently running agents. It has not been measured. Count live agents from an observed common interval and validate completed assigned tasks; also report task completion rate, errors, task latency, resource use, topology and cost. Idle records, agent creations per second and extrapolations from a smaller run do not establish concurrent execution. Use incremental load levels with a real agent workload and a Rust client. The pinned Loams checkout has agentd and orchestration APIs, but no identified product or deployment named Loams Swarm; select the concrete runtime and task contract before making a result claim. The existing $2,400 combined benchmark ceiling applies.
