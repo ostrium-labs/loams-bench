@@ -102,3 +102,7 @@ All 24 repetitions exited successfully with zero failed transactions. pgbench di
 PgDog uses transaction pooling, two workers and the default maximum pool size of ten server connections. This is a default-configuration baseline, not a tuning sweep. The documented knobs are [workers and default_pool_size](https://docs.pgdog.dev/configuration/pgdog.toml/general/). There is one backend and no sharding in this run.
 
 Reproduce the verified point-read suite with `BENCH_PG_DIRECT_DSN` and `BENCH_PG_ROUTER_DSN` supplied externally, then `python postgres.py`. `python pgbench.py` initializes the **scratch database** with scale-1 pgbench tables and runs the native suite; it defaults to the local Podman container names recorded in its source. Never point it at an existing application database. Docker users can set `BENCH_CONTAINER_ENGINE` and `BENCH_COMPUTE_CONTAINER`.
+
+## Rust release-client results
+
+[Loams Live function-query baseline](results/2026-10-28-rust-release/README.md): nine runs, no query failures. This measures a ping function and does not cover Live table access or subscriptions.

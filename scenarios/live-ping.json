@@ -1,0 +1,20 @@
+[
+  {
+    "id": "live-query-ping",
+    "engine": "Loams Live 0.1.2",
+    "unit": "validated queries/s",
+    "url": "http://127.0.0.1:28380/loams.live.v1.LiveService/Query",
+    "body": {
+      "function": "notes:ping"
+    },
+    "expected_pointer": "/result/stringValue",
+    "expected_value": "pong",
+    "concurrency": [
+      1,
+      8,
+      32
+    ],
+    "seconds": 5,
+    "repetitions": 3
+  }
+]
