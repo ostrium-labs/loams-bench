@@ -31,11 +31,11 @@ Basic clusters in AWS ap-south-1, GCP asia-south1 and Azure centralindia. Three 
 | azure | 368.8 | 16384 | 14688 | 1696 |
 | gcp | 289.4 | 16384 | 16384 | 0 |
 
-Azure did not consume 1,696 acknowledged messages before the configured 15-second drain expired. The raw field `lost_after_ack` counts this observation; it is **not proof of permanent message loss**. The driver deleted its test topic afterward, so this run cannot establish later delivery. The run is incomplete for end-to-end delivery validation. Kafka telemetry was configured for the local OTLP collector; trace receipt was not independently verified.
+Azure did not consume 1,696 acknowledged messages before the configured 15-second drain expired. The raw field `lost_after_ack` counts this observation; it is **not proof of permanent message loss**. The driver deleted its test topic afterward, so this run cannot establish later delivery. The run is incomplete for end-to-end delivery validation. SigNoz receipt was verified by querying spans with this exact run resource attribute: 492 spans each for AWS and GCP, and 475 for Azure. Counts by span name are in `signoz-span-counts.json`. The collector uses a separate ClickHouse instance; this does not demonstrate SigNoz on Loams House.
 
 ## Not yet measured
 
-Loams Postgres (Neon fork) plus PostgreSQL routing: pinned storage/compute image deployment is still being prepared. No Postgres or router number is claimed. `loams-sqlrouter` is currently a sans-I/O control-plane library, not a runnable SQL proxy; the exact requested routing topology still needs to be established. Several unrelated Loams PRs remain open or conflicted. These runs do not claim that all PRs have merged or that the executables include their changes.
+Loams Postgres (Neon fork) plus PostgreSQL routing: pinned storage/compute image deployment is still being prepared. No Postgres or router number is claimed. `loams-sqlrouter` is currently a sans-I/O control-plane library, not a runnable SQL proxy; the owner confirmed PgDog as the requested router. `postgres.py` prepares the direct-versus-PgDog comparison driver; it has not yet produced measurements. Several unrelated Loams PRs remain open or conflicted. These runs do not claim that all PRs have merged or that the executables include their changes.
 
 ## Reproduce
 

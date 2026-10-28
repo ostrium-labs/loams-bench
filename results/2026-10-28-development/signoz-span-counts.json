@@ -1,0 +1,51 @@
+{
+  "run": "engine-baseline-20261028",
+  "counts": [
+    {
+      "cloud": "aws",
+      "name": "kafka.deliver",
+      "spans": 164
+    },
+    {
+      "cloud": "aws",
+      "name": "kafka.message",
+      "spans": 164
+    },
+    {
+      "cloud": "aws",
+      "name": "kafka.produce",
+      "spans": 164
+    },
+    {
+      "cloud": "azure",
+      "name": "kafka.deliver",
+      "spans": 147
+    },
+    {
+      "cloud": "azure",
+      "name": "kafka.message",
+      "spans": 164
+    },
+    {
+      "cloud": "azure",
+      "name": "kafka.produce",
+      "spans": 164
+    },
+    {
+      "cloud": "gcp",
+      "name": "kafka.deliver",
+      "spans": 164
+    },
+    {
+      "cloud": "gcp",
+      "name": "kafka.message",
+      "spans": 164
+    },
+    {
+      "cloud": "gcp",
+      "name": "kafka.produce",
+      "spans": 164
+    }
+  ],
+  "source": "SigNoz community ClickHouse signoz_traces.signoz_index_v3; query filtered by exact run resource attribute"
+}
