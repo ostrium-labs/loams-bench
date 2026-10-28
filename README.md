@@ -46,3 +46,19 @@ The Confluent driver is copied from the Loams CFB worktree `bench/confluent/driv
 ## Budget
 
 Authorized ceiling: $2,400, including the earlier $400 Confluent allocation. No new cloud compute or Confluent clusters were provisioned for these runs. Local image downloads, Python dependencies and existing-cluster traffic were used. Additional Kafka payload was 48 MiB sent plus at most 48 MiB consumed; using the earlier conservative $0.05/GB each direction gives less than $0.01 payload transfer (estimate, excludes protocol overhead). Existing cluster running charges continue under the original campaign guard; this is not reconciled billing.
+
+## House transport sensitivity
+
+The same seeded aggregate was also measured with a fresh HTTP connection for every query (`python house_connections.py` after `run.py` seeds the server). This is a separate measurement and retains all earlier results.
+
+| Clients | Fresh-connection QPS median | QPS range | Errors |
+|---|---:|---:|---:|
+| 1 | 158.4 | 153.7–161.3 | 0 |
+| 8 | 855.3 | 851.3–870.3 | 0 |
+| 32 | 1385.3 | 1305.2–1406.0 | 0 |
+
+The single-client difference is consistent with overhead in the test HTTP persistent-connection path. It does not identify a particular TCP mechanism or establish production engine capacity.
+
+## Postgres runner
+
+The manually dispatched `Postgres and PgDog benchmark` workflow uses an isolated GitHub-hosted Ubuntu 24.04 runner, pinned Loams source and pinned PostgreSQL storage/compute and PgDog images. It compares direct SQL point reads with the same reads through PgDog. This is separate hardware from the laptop. Every returned value is validated. The fixture uses development credentials on loopback ports, with no cloud credentials. Results are not claimed until the workflow completes and its measurements are downloaded.
