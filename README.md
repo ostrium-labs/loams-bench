@@ -33,9 +33,9 @@ Basic clusters in AWS ap-south-1, GCP asia-south1 and Azure centralindia. Three 
 
 Azure did not consume 1,696 acknowledged messages before the configured 15-second drain expired. The raw field `lost_after_ack` counts this observation; it is **not proof of permanent message loss**. The driver deleted its test topic afterward, so this run cannot establish later delivery. The run is incomplete for end-to-end delivery validation. SigNoz receipt was verified by querying spans with this exact run resource attribute: 492 spans each for AWS and GCP, and 475 for Azure. Counts by span name are in `signoz-span-counts.json`. The collector uses a separate ClickHouse instance; this does not demonstrate SigNoz on Loams House.
 
-## Not yet measured
+## Scope limits
 
-Loams Postgres (Neon fork) plus PostgreSQL routing: pinned storage/compute image deployment is still being prepared. No Postgres or router number is claimed. `loams-sqlrouter` is currently a sans-I/O control-plane library, not a runnable SQL proxy; the owner confirmed PgDog as the requested router. `postgres.py` prepares the direct-versus-PgDog comparison driver; it has not yet produced measurements. Several unrelated Loams PRs remain open or conflicted. These runs do not claim that all PRs have merged or that the executables include their changes.
+These are single-compute, unsharded development runs. Several unrelated Loams PRs remain open or conflicted. The source pin and executable hashes identify what was actually measured; this report does not claim all PRs are merged. No billion-QPS, durable-write, large-corpus relevance, failover, multi-node or cross-region SQL capacity has been demonstrated.
 
 ## Reproduce
 
@@ -61,4 +61,44 @@ The single-client difference is consistent with overhead in the test HTTP persis
 
 ## Postgres runner
 
-The manually dispatched `Postgres and PgDog benchmark` workflow uses an isolated GitHub-hosted Ubuntu 24.04 runner, pinned Loams source and pinned PostgreSQL storage/compute and PgDog images. It compares direct SQL point reads with the same reads through PgDog. This is separate hardware from the laptop. Every returned value is validated. The fixture uses development credentials on loopback ports, with no cloud credentials. Results are not claimed until the workflow completes and its measurements are downloaded.
+The manually dispatched `Postgres and PgDog benchmark` workflow uses an isolated GitHub-hosted Ubuntu 24.04 runner, pinned Loams source and pinned PostgreSQL storage/compute and PgDog images. It compares direct SQL point reads with the same reads through PgDog. This is separate hardware from the laptop. Every returned value is validated. The fixture uses development credentials on loopback ports, with no cloud credentials. That workflow was queued and canceled once the local deployment succeeded; no hosted-runner result is claimed. All Postgres measurements below came from the local laptop.
+
+## Loams Postgres 17.11 with PgDog 0.1.60
+
+Pinned compute/storage images, one compute, one pageserver and one safekeeper, local-folder backing store. Scratch compose topology and image digests are recorded under `results/2026-10-28-postgres/`. Disabled RustFS-only services and optional dependencies in the local compose copy to accommodate podman-compose 1.6.0. Own House and hybrid processes were stopped before these runs.
+
+**Development settings: fsync=off, synchronous_commit=on, shared_buffers=128MB, max_connections=100. All timed workloads are read-only, with data warmed by initialization and validation. No durable-write throughput is claimed.**
+
+### Verified point reads from the host Python client
+
+100,000 rows, deterministic primary-key permutation, autocommit, client prepared statements disabled, one warmup per connection, three five-second repetitions. Every returned value is checked. All 18 repetitions had zero errors.
+
+| Path | Clients | Median QPS | QPS range | p99 ms range |
+|---|---:|---:|---:|---:|
+| direct | 1 | 7,428 | 6,351–7,559 | 0.678–0.756 |
+| direct | 8 | 24,240 | 23,949–24,949 | 0.928–0.961 |
+| direct | 32 | 30,031 | 29,982–30,426 | 1.489–1.690 |
+| pgdog | 1 | 4,460 | 4,412–5,061 | 0.904–0.961 |
+| pgdog | 8 | 22,311 | 21,943–22,440 | 1.115–1.152 |
+| pgdog | 32 | 28,901 | 28,828–29,389 | 2.140–2.347 |
+
+### Native pgbench select-only
+
+PostgreSQL 17.11 `pgbench`, scale 1 (100,000 accounts), simple query protocol, clients 1/8/32/64, up to four client threads, three ten-second repetitions. The client runs inside the compute container: direct connects by TCP loopback; PgDog crosses the container bridge. This topology differs from the host Python driver, so their rates are not a controlled client-only comparison. The built-in select-only script performs one SELECT per counted transaction; its reported TPS is therefore query throughput for this specific workload.
+
+All 24 repetitions exited successfully with zero failed transactions. pgbench discards SELECT result values; separate pre/post fixture checks verify table cardinality and contents. Raw stdout/stderr and exact commands are retained. These short cached-read runs do not establish maximum capacity.
+
+| Path | Clients | Median select-only QPS | QPS range |
+|---|---:|---:|---:|
+| direct | 1 | 19,824 | 19,780–19,844 |
+| direct | 8 | 200,565 | 199,630–201,565 |
+| direct | 32 | 289,343 | 285,682–290,421 |
+| direct | 64 | 296,010 | 295,875–298,845 |
+| pgdog | 1 | 17,433 | 17,118–17,620 |
+| pgdog | 8 | 96,740 | 93,695–97,239 |
+| pgdog | 32 | 125,492 | 122,961–126,566 |
+| pgdog | 64 | 121,792 | 121,377–125,562 |
+
+PgDog uses transaction pooling, two workers and the default maximum pool size of ten server connections. This is a default-configuration baseline, not a tuning sweep. The documented knobs are [workers and default_pool_size](https://docs.pgdog.dev/configuration/pgdog.toml/general/). There is one backend and no sharding in this run.
+
+Reproduce the verified point-read suite with `BENCH_PG_DIRECT_DSN` and `BENCH_PG_ROUTER_DSN` supplied externally, then `python postgres.py`. `python pgbench.py` initializes the **scratch database** with scale-1 pgbench tables and runs the native suite; it defaults to the local Podman container names recorded in its source. Never point it at an existing application database. Docker users can set `BENCH_CONTAINER_ENGINE` and `BENCH_COMPUTE_CONTAINER`.

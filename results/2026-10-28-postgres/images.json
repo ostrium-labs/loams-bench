@@ -1,0 +1,34 @@
+[
+  {
+    "name": "loams-engine-bench_compute1_1",
+    "image_id": "4f0299fc78728c8c457ee857285a7fe731c013078c59630332fabf59ee3c3017",
+    "image_digest": "sha256:210b71416c827b6cf7842853706e1dbdcc870fd4a7af8e235d6e7296b95edb0e",
+    "image_name": "ghcr.io/ostrium-labs/loams-postgres-compute-v17@sha256:210b71416c827b6cf7842853706e1dbdcc870fd4a7af8e235d6e7296b95edb0e",
+    "memory_limit": 0,
+    "cpu_quota": 0
+  },
+  {
+    "name": "loams-engine-bench_pageserver_1",
+    "image_id": "21c565e4f844ba1c317106a4efad65e86b5aadb7c1870d0e5bb3cbea3e35c114",
+    "image_digest": "sha256:4dcec4cbef637b92b1088ea2c0bc857f3b5ef4318f02e8d2d4a0f9263ed4140e",
+    "image_name": "ghcr.io/ostrium-labs/loams-postgres-storage@sha256:4dcec4cbef637b92b1088ea2c0bc857f3b5ef4318f02e8d2d4a0f9263ed4140e",
+    "memory_limit": 0,
+    "cpu_quota": 0
+  },
+  {
+    "name": "loams-engine-bench_safekeeper1_1",
+    "image_id": "21c565e4f844ba1c317106a4efad65e86b5aadb7c1870d0e5bb3cbea3e35c114",
+    "image_digest": "sha256:4dcec4cbef637b92b1088ea2c0bc857f3b5ef4318f02e8d2d4a0f9263ed4140e",
+    "image_name": "ghcr.io/ostrium-labs/loams-postgres-storage@sha256:4dcec4cbef637b92b1088ea2c0bc857f3b5ef4318f02e8d2d4a0f9263ed4140e",
+    "memory_limit": 0,
+    "cpu_quota": 0
+  },
+  {
+    "name": "loams-bench-pgdog",
+    "image_id": "41eb8bf16ed8cbdcf801b4bc1db75c1b9f64ccb019eeca30da571bcec301e79f",
+    "image_digest": "sha256:25d1908886f595a2e3b00ec59783326712e3c0f75f91d29f032ff712b30f2266",
+    "image_name": "ghcr.io/pgdogdev/pgdog@sha256:25d1908886f595a2e3b00ec59783326712e3c0f75f91d29f032ff712b30f2266",
+    "memory_limit": 0,
+    "cpu_quota": 0
+  }
+]
