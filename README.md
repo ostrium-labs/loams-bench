@@ -31,11 +31,11 @@ Basic clusters in AWS ap-south-1, GCP asia-south1 and Azure centralindia. Three 
 | azure | 368.8 | 16384 | 14688 | 1696 |
 | gcp | 289.4 | 16384 | 16384 | 0 |
 
-Azure did not consume 1,696 acknowledged messages before the configured 15-second drain expired. The raw field `lost_after_ack` counts this observation; it is **not proof of permanent message loss**. The driver deleted its test topic afterward, so this run cannot establish later delivery. The run is incomplete for end-to-end delivery validation. Kafka telemetry was configured for the local OTLP collector; trace receipt was not independently verified.
+Azure did not consume 1,696 acknowledged messages before the configured 15-second drain expired. The raw field `lost_after_ack` counts this observation; it is **not proof of permanent message loss**. The driver deleted its test topic afterward, so this run cannot establish later delivery. The run is incomplete for end-to-end delivery validation. SigNoz receipt was verified by querying spans with this exact run resource attribute: 492 spans each for AWS and GCP, and 475 for Azure. Counts by span name are in `signoz-span-counts.json`. The collector uses a separate ClickHouse instance; this does not demonstrate SigNoz on Loams House.
 
 ## Not yet measured
 
-Loams Postgres (Neon fork) plus PostgreSQL routing: pinned storage/compute image deployment is still being prepared. No Postgres or router number is claimed. `loams-sqlrouter` is currently a sans-I/O control-plane library, not a runnable SQL proxy; the exact requested routing topology still needs to be established. Several unrelated Loams PRs remain open or conflicted. These runs do not claim that all PRs have merged or that the executables include their changes.
+Loams Postgres (Neon fork) plus PostgreSQL routing: pinned storage/compute image deployment is still being prepared. No Postgres or router number is claimed. `loams-sqlrouter` is currently a sans-I/O control-plane library, not a runnable SQL proxy; the owner confirmed PgDog as the requested router. `postgres.py` prepares the direct-versus-PgDog comparison driver; it has not yet produced measurements. Several unrelated Loams PRs remain open or conflicted. These runs do not claim that all PRs have merged or that the executables include their changes.
 
 ## Reproduce
 
@@ -46,3 +46,19 @@ The Confluent driver is copied from the Loams CFB worktree `bench/confluent/driv
 ## Budget
 
 Authorized ceiling: $2,400, including the earlier $400 Confluent allocation. No new cloud compute or Confluent clusters were provisioned for these runs. Local image downloads, Python dependencies and existing-cluster traffic were used. Additional Kafka payload was 48 MiB sent plus at most 48 MiB consumed; using the earlier conservative $0.05/GB each direction gives less than $0.01 payload transfer (estimate, excludes protocol overhead). Existing cluster running charges continue under the original campaign guard; this is not reconciled billing.
+
+## House transport sensitivity
+
+The same seeded aggregate was also measured with a fresh HTTP connection for every query (`python house_connections.py` after `run.py` seeds the server). This is a separate measurement and retains all earlier results.
+
+| Clients | Fresh-connection QPS median | QPS range | Errors |
+|---|---:|---:|---:|
+| 1 | 158.4 | 153.7–161.3 | 0 |
+| 8 | 855.3 | 851.3–870.3 | 0 |
+| 32 | 1385.3 | 1305.2–1406.0 | 0 |
+
+The single-client difference is consistent with overhead in the test HTTP persistent-connection path. It does not identify a particular TCP mechanism or establish production engine capacity.
+
+## Postgres runner
+
+The manually dispatched `Postgres and PgDog benchmark` workflow uses an isolated GitHub-hosted Ubuntu 24.04 runner, pinned Loams source and pinned PostgreSQL storage/compute and PgDog images. It compares direct SQL point reads with the same reads through PgDog. This is separate hardware from the laptop. Every returned value is validated. The fixture uses development credentials on loopback ports, with no cloud credentials. Results are not claimed until the workflow completes and its measurements are downloaded.

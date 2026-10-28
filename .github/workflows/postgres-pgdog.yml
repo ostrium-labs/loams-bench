@@ -1,0 +1,94 @@
+name: Postgres and PgDog benchmark
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: postgres-pgdog-benchmark
+  cancel-in-progress: false
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    env:
+      BENCH_PG_DIRECT_DSN: postgresql://cloud_admin:cloud_admin@127.0.0.1:55433/postgres
+      BENCH_PG_ROUTER_DSN: postgresql://cloud_admin:cloud_admin@127.0.0.1:26432/postgres
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: ostrium-labs/loams
+          ref: 43266b656062f5de96bc4839ed6eeca843f8ed9a
+          path: loams-source
+      - name: Record runner and source
+        run: |
+          mkdir -p results/2026-10-28-postgres
+          lscpu > results/2026-10-28-postgres/runner-cpu.txt
+          free -h > results/2026-10-28-postgres/runner-memory.txt
+          git -C loams-source rev-parse HEAD > results/2026-10-28-postgres/loams-source.txt
+          printf '%s\n' "$GITHUB_RUN_ID" > results/2026-10-28-postgres/github-run-id.txt
+          python3 -m pip install 'psycopg[binary]==3.3.6'
+      - name: Start pinned Loams Postgres
+        run: |
+          docker compose -p loams-engine-bench -f loams-source/deploy/loams-postgres-dev/compose.yaml up -d compute1
+          python3 - <<'PY'
+          import os,time,psycopg
+          for attempt in range(90):
+              try:
+                  with psycopg.connect(os.environ['BENCH_PG_DIRECT_DSN'],connect_timeout=3) as c:
+                      assert c.execute('SELECT 1').fetchone()==(1,)
+                  break
+              except psycopg.OperationalError:
+                  time.sleep(2)
+          else:
+              raise SystemExit('Loams Postgres did not become ready')
+          PY
+      - name: Start pinned PgDog
+        run: |
+          mkdir -p "$RUNNER_TEMP/pgdog"
+          cat > "$RUNNER_TEMP/pgdog/pgdog.toml" <<'TOML'
+          [general]
+          host = "0.0.0.0"
+          port = 6432
+          auth_type = "scram"
+          pooler_mode = "transaction"
+          [[databases]]
+          name = "postgres"
+          host = "compute1"
+          port = 55433
+          database_name = "postgres"
+          TOML
+          cat > "$RUNNER_TEMP/pgdog/users.toml" <<'TOML'
+          [[users]]
+          name = "cloud_admin"
+          database = "postgres"
+          password = "cloud_admin"
+          TOML
+          docker run -d --name loams-bench-pgdog --network loams-engine-bench_default -p 127.0.0.1:26432:6432 -v "$RUNNER_TEMP/pgdog:/etc/pgdog:ro" ghcr.io/pgdogdev/pgdog@sha256:25d1908886f595a2e3b00ec59783326712e3c0f75f91d29f032ff712b30f2266 pgdog --config /etc/pgdog/pgdog.toml --users /etc/pgdog/users.toml
+          python3 - <<'PY'
+          import os,time,psycopg
+          for attempt in range(30):
+              try:
+                  with psycopg.connect(os.environ['BENCH_PG_ROUTER_DSN'],connect_timeout=3) as c:
+                      assert c.execute('SELECT 1').fetchone()==(1,)
+                  break
+              except psycopg.OperationalError:
+                  time.sleep(2)
+          else:
+              raise SystemExit('PgDog did not become ready')
+          PY
+      - name: Measure verified point queries
+        run: python3 postgres.py
+      - name: Record diagnostics and stop services
+        if: always()
+        run: |
+          docker images --digests > results/2026-10-28-postgres/images.txt
+          docker compose -p loams-engine-bench -f loams-source/deploy/loams-postgres-dev/compose.yaml logs --no-color > results/2026-10-28-postgres/compose.log 2>&1 || true
+          docker logs loams-bench-pgdog > results/2026-10-28-postgres/pgdog.log 2>&1 || true
+          docker rm -f loams-bench-pgdog || true
+          docker compose -p loams-engine-bench -f loams-source/deploy/loams-postgres-dev/compose.yaml down -v || true
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9
+        if: always()
+        with:
+          name: postgres-pgdog-results
+          path: results/2026-10-28-postgres/
