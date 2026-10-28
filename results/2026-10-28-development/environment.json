@@ -1,0 +1,21 @@
+{
+  "platform": "Linux-7.2.4-3-cachyos-x86_64-with-glibc2.44",
+  "cpu_count": 14,
+  "python": "3.14.7",
+  "binaries": {
+    "loams": {
+      "sha256": "517efafd24e461d776efdbd5895b689e5a947d85bf80e13f50885c508386d4bd",
+      "size_bytes": 1122936448,
+      "build": "pre-existing debug executable; exact source SHA unverified"
+    },
+    "loams-house-engine-dev": {
+      "sha256": "d4547c7efc71de553f90e1c14e46b828bfdedeca9e4ed609657652e836041a23",
+      "size_bytes": 319661320,
+      "build": "pre-existing debug executable; exact source SHA unverified"
+    }
+  },
+  "method": "closed-loop, local loopback; co-located driver; shared machine; warm in-memory data; 10 warmup queries, 5-second repetitions",
+  "house_rows": 100000,
+  "hybrid_documents": 1000,
+  "hybrid_dimensions": 32
+}
