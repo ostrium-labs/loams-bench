@@ -1,0 +1,13 @@
+{
+  "pgbench_accounts": [
+    100000,
+    1,
+    100000,
+    0
+  ],
+  "loams_bench_points": [
+    100000,
+    9999900000
+  ],
+  "verified": true
+}

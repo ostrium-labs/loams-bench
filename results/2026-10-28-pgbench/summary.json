@@ -1,0 +1,194 @@
+[
+  {
+    "topology": "direct",
+    "clients": 1,
+    "repetition": 1,
+    "tps": 19824.423055,
+    "failed_transactions": 0,
+    "successful_queries": 198198
+  },
+  {
+    "topology": "direct",
+    "clients": 1,
+    "repetition": 2,
+    "tps": 19780.449721,
+    "failed_transactions": 0,
+    "successful_queries": 197761
+  },
+  {
+    "topology": "direct",
+    "clients": 1,
+    "repetition": 3,
+    "tps": 19844.124814,
+    "failed_transactions": 0,
+    "successful_queries": 198399
+  },
+  {
+    "topology": "direct",
+    "clients": 8,
+    "repetition": 1,
+    "tps": 199630.458505,
+    "failed_transactions": 0,
+    "successful_queries": 1995000
+  },
+  {
+    "topology": "direct",
+    "clients": 8,
+    "repetition": 2,
+    "tps": 201565.053849,
+    "failed_transactions": 0,
+    "successful_queries": 2014216
+  },
+  {
+    "topology": "direct",
+    "clients": 8,
+    "repetition": 3,
+    "tps": 200565.302107,
+    "failed_transactions": 0,
+    "successful_queries": 2004865
+  },
+  {
+    "topology": "direct",
+    "clients": 32,
+    "repetition": 1,
+    "tps": 290421.280269,
+    "failed_transactions": 0,
+    "successful_queries": 2894732
+  },
+  {
+    "topology": "direct",
+    "clients": 32,
+    "repetition": 2,
+    "tps": 289342.779205,
+    "failed_transactions": 0,
+    "successful_queries": 2886279
+  },
+  {
+    "topology": "direct",
+    "clients": 32,
+    "repetition": 3,
+    "tps": 285682.110215,
+    "failed_transactions": 0,
+    "successful_queries": 2851386
+  },
+  {
+    "topology": "direct",
+    "clients": 64,
+    "repetition": 1,
+    "tps": 296009.687096,
+    "failed_transactions": 0,
+    "successful_queries": 2947417
+  },
+  {
+    "topology": "direct",
+    "clients": 64,
+    "repetition": 2,
+    "tps": 298845.373822,
+    "failed_transactions": 0,
+    "successful_queries": 2975393
+  },
+  {
+    "topology": "direct",
+    "clients": 64,
+    "repetition": 3,
+    "tps": 295874.996088,
+    "failed_transactions": 0,
+    "successful_queries": 2940593
+  },
+  {
+    "topology": "pgdog",
+    "clients": 1,
+    "repetition": 1,
+    "tps": 17118.133277,
+    "failed_transactions": 0,
+    "successful_queries": 171115
+  },
+  {
+    "topology": "pgdog",
+    "clients": 1,
+    "repetition": 2,
+    "tps": 17620.190778,
+    "failed_transactions": 0,
+    "successful_queries": 176126
+  },
+  {
+    "topology": "pgdog",
+    "clients": 1,
+    "repetition": 3,
+    "tps": 17432.913569,
+    "failed_transactions": 0,
+    "successful_queries": 174265
+  },
+  {
+    "topology": "pgdog",
+    "clients": 8,
+    "repetition": 1,
+    "tps": 97239.409533,
+    "failed_transactions": 0,
+    "successful_queries": 969576
+  },
+  {
+    "topology": "pgdog",
+    "clients": 8,
+    "repetition": 2,
+    "tps": 96739.673969,
+    "failed_transactions": 0,
+    "successful_queries": 964588
+  },
+  {
+    "topology": "pgdog",
+    "clients": 8,
+    "repetition": 3,
+    "tps": 93695.198514,
+    "failed_transactions": 0,
+    "successful_queries": 934736
+  },
+  {
+    "topology": "pgdog",
+    "clients": 32,
+    "repetition": 1,
+    "tps": 126566.406916,
+    "failed_transactions": 0,
+    "successful_queries": 1251579
+  },
+  {
+    "topology": "pgdog",
+    "clients": 32,
+    "repetition": 2,
+    "tps": 125491.728061,
+    "failed_transactions": 0,
+    "successful_queries": 1242532
+  },
+  {
+    "topology": "pgdog",
+    "clients": 32,
+    "repetition": 3,
+    "tps": 122961.0307,
+    "failed_transactions": 0,
+    "successful_queries": 1216339
+  },
+  {
+    "topology": "pgdog",
+    "clients": 64,
+    "repetition": 1,
+    "tps": 125561.590343,
+    "failed_transactions": 0,
+    "successful_queries": 1228612
+  },
+  {
+    "topology": "pgdog",
+    "clients": 64,
+    "repetition": 2,
+    "tps": 121377.073786,
+    "failed_transactions": 0,
+    "successful_queries": 1190038
+  },
+  {
+    "topology": "pgdog",
+    "clients": 64,
+    "repetition": 3,
+    "tps": 121792.441648,
+    "failed_transactions": 0,
+    "successful_queries": 1190929
+  }
+]

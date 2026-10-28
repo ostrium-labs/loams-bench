@@ -1,0 +1,24 @@
+{
+  "command": [
+    "podman",
+    "exec",
+    "--env",
+    "PGPASSWORD=cloud_admin",
+    "loams-engine-bench_compute1_1",
+    "pgbench",
+    "-U",
+    "cloud_admin",
+    "-d",
+    "postgres",
+    "-h",
+    "127.0.0.1",
+    "-p",
+    "55433",
+    "-i",
+    "-s",
+    "1"
+  ],
+  "exit_code": 0,
+  "stdout": "",
+  "stderr": "dropping old tables...\nNOTICE:  table \"pgbench_accounts\" does not exist, skipping\nNOTICE:  table \"pgbench_branches\" does not exist, skipping\nNOTICE:  table \"pgbench_history\" does not exist, skipping\nNOTICE:  table \"pgbench_tellers\" does not exist, skipping\ncreating tables...\ngenerating data (client-side)...\n100000 of 100000 tuples (100%) of pgbench_accounts done (elapsed 0.01 s, remaining 0.00 s)\nvacuuming...\ncreating primary keys...\ndone in 0.55 s (drop tables 0.01 s, create tables 0.07 s, client-side generate 0.38 s, vacuum 0.05 s, primary keys 0.04 s).\n"
+}
