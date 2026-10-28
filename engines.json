@@ -1,0 +1,198 @@
+{
+  "schema_version": 1,
+  "loams_source_revision": "bbdf01d9a2bc25cc0f1deac7c0cb0f4040992b9f",
+  "benchmark_budget_ceiling_usd": 2400,
+  "target_successful_queries_per_second": 1000000000,
+  "git_target_completed_operations_per_second": 1000000000,
+  "target_status": "unverified",
+  "rules": [
+    "Keep different units separate.",
+    "Count successful correctness-validated completions, not offered requests or scanned rows.",
+    "Require simultaneous measurement windows before aggregating nodes of the same workload.",
+    "Never multiply single-node QPS into a claimed distributed measurement.",
+    "Record source, artifact hashes, compiler, release profile, fixture, topology, errors and latency.",
+    "Spend requires a bounded run allocation and remaining-budget check."
+  ],
+  "engines": [
+    {
+      "id": "vector",
+      "backend": "Loams dense vector",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "sparse-vector",
+      "backend": "Loams sparse vector",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "text",
+      "backend": "Loams Tantivy text",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "hybrid",
+      "backend": "Loams hybrid RRF",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "live",
+      "backend": "Loams Live",
+      "release_artifact": "loams + loams-live-worker",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "queries/s; committed mutations/s; delivered transitions/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "graph",
+      "backend": "Loams Graph",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "graph queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "house",
+      "backend": "Loams House Rust engine",
+      "release_artifact": "loams-house-worker + loams-fabric",
+      "client_language": "Rust",
+      "protocol": "http",
+      "metric": "SQL queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "postgres",
+      "backend": "Loams Postgres through PgDog",
+      "release_artifact": "pinned Postgres and PgDog images",
+      "client_language": "Rust",
+      "protocol": "postgres",
+      "metric": "SQL queries/s; committed transactions/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "mysql-wire",
+      "backend": "Loams MySQL compatibility gateway",
+      "release_artifact": "loams",
+      "client_language": "Rust",
+      "protocol": "mysql",
+      "metric": "SQL queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "redis",
+      "backend": "Loams RESP gateway",
+      "release_artifact": "loams-gateway --features resp",
+      "client_language": "Rust",
+      "protocol": "redis",
+      "metric": "validated GET/s; acknowledged SET/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "cql",
+      "backend": "Loams CQL gateway",
+      "release_artifact": "implementation not found in pinned dev",
+      "client_language": "Rust",
+      "protocol": "cql",
+      "metric": "validated reads/s; acknowledged writes/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "kafka",
+      "backend": "Loams Iggy Kafka gateway",
+      "release_artifact": "iggy-server + iggy-gateway-kafka",
+      "client_language": "Rust",
+      "protocol": "kafka",
+      "metric": "acknowledged records/s; consumed records/s; bytes/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "event-fabric",
+      "backend": "Loams native connector pipeline",
+      "release_artifact": "loams-fabric --features connectors + loams stream-grpc",
+      "client_language": "Rust",
+      "protocol": "pipeline",
+      "metric": "source-to-sink verified records/s; duplicates; missing; backlog",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "streaming-sql",
+      "backend": "RisingWave (owner-selected streaming SQL backend)",
+      "release_artifact": "pinned RisingWave v3.1.0 image",
+      "client_language": "Rust",
+      "protocol": "postgres",
+      "metric": "stream input records/s; materialized-view freshness; SQL queries/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "spark",
+      "backend": "Sail Rust Spark backend",
+      "release_artifact": "Sail 0.7.2 release",
+      "client_language": "Rust",
+      "protocol": "spark-connect",
+      "metric": "completed SQL queries/s; processed rows/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "durable",
+      "backend": "Loams durable / Resonate",
+      "release_artifact": "loams --features durable",
+      "client_language": "Rust",
+      "protocol": "resonate",
+      "metric": "completed workflows/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "temporal",
+      "backend": "Loams Temporal gateway",
+      "release_artifact": "loams-temporal",
+      "client_language": "Rust",
+      "protocol": "temporal",
+      "metric": "completed workflows/s; completed activities/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "airflow",
+      "backend": "Airflow integration with Loams Resonate executor",
+      "release_artifact": "airflow provider + Resonate worker",
+      "client_language": "Rust",
+      "protocol": "airflow",
+      "metric": "completed DAG runs/s; successful task instances/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "git",
+      "backend": "Loams Git",
+      "release_artifact": "loams --features git + git-remote-loams",
+      "client_language": "Rust",
+      "protocol": "git-smart-http",
+      "metric": "ref discovery/s; verified fetches/s; clones/s; acknowledged pushes/s",
+      "status": "planned; no release-suite measurement yet"
+    },
+    {
+      "id": "obscura",
+      "backend": "Obscura headless browser through Loams web bridge",
+      "release_artifact": "loams-agentd + pinned Obscura",
+      "client_language": "Rust",
+      "protocol": "cdp",
+      "metric": "completed navigations/s; DOM reads/s; script evaluations/s; screenshots/s",
+      "status": "planned; no release-suite measurement yet"
+    }
+  ]
+}
