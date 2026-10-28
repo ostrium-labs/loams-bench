@@ -54,7 +54,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: ostrium-labs/loams
-          ref: bbdf01d9a2bc25cc0f1deac7c0cb0f4040992b9f
+          ref: 61b1d878089cdddfdddf281adc0991aa6fdc30b9
           path: source
       - name: Install build prerequisites
         run: |
@@ -67,6 +67,7 @@ jobs:
           printf '[build]\ntarget-dir="/mnt/Projects/rust-cache/target"\njobs=2\nincremental=false\n' > "$HOME/.cargo/config.toml"
           rustc +1.97.1 -Vv > release-artifacts/compiler.txt
           git -C source rev-parse HEAD > release-artifacts/loams-source.txt
+          printf '%s\n' "$GITHUB_SHA" > release-artifacts/benchmark-source.txt
       - name: Release engine core and gateways
         working-directory: source
         run: |
@@ -74,6 +75,7 @@ jobs:
           cargo +1.97.1 build --release --locked -p loams --bin loams --features live,live-tikv,durable,durable-tikv,graph,git,tikv,pgwire,mysql-wire,stream-grpc,spark
           cargo +1.97.1 build --release --locked -p loams-gateway --bin loams-gateway --features temporal,spark,resp
           cargo +1.97.1 build --release --locked -p loams-temporal-frontend -p loams-spark -p loams-live-js -p loams-agentd -p loams-git-remote --bins
+          cargo +1.97.1 build --release --locked -p loams-live-js --features agent --bin loams-agent-worker
       - name: Release House and Event Fabric
         working-directory: source
         run: |
