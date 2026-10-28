@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "loams_source_revision": "bbdf01d9a2bc25cc0f1deac7c0cb0f4040992b9f",
+  "loams_source_revision": "61b1d878089cdddfdddf281adc0991aa6fdc30b9",
   "benchmark_budget_ceiling_usd": 2400,
   "target_successful_queries_per_second": 1000000000,
   "git_target_completed_operations_per_second": 1000000000,
