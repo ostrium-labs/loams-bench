@@ -1,5 +1,7 @@
 # Loams benchmarks
 
+Raw benchmark results and trace exports now live in [loams-traces](https://github.com/ostrium-labs/loams-traces), with a Vite+ / DuckDB-Wasm browser explorer and a SHA-256 provenance manifest. This repository owns the reproducible drivers. Historical measurements below retain their original conditions.
+
 Measured results and reproducible drivers. The **1 billion QPS goal has not been reached**.
 
 ## 2026-10-28 development baseline
@@ -105,4 +107,4 @@ Reproduce the verified point-read suite with `BENCH_PG_DIRECT_DSN` and `BENCH_PG
 
 ## Rust release-client results
 
-[Loams Live function-query baseline](results/2026-10-28-rust-release/README.md): nine runs, no query failures. This measures a ping function and does not cover Live table access or subscriptions.
+[Loams Live function-query baseline](https://github.com/ostrium-labs/loams-traces): nine runs, no query failures. This measures a ping function and does not cover Live table access or subscriptions.
